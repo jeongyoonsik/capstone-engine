@@ -3,19 +3,35 @@ from time import sleep
 from plate_tree import PlateTree
 
 
+# def merge_results(*args):
 def merge_results(plate1, plate2):
     distance = editdistance.eval(plate1, plate2)
     if distance < 2:
         return "Cannot be merged to form new result"
     plate_array = []
     while len(plate1) != len(plate2):
-        # need to rework this logic to inteligently add '_' such that edit_distance doesn't change
         if len(plate1) > len(plate2):
-            plate2 += '_'
+            temp_array = list(plate2)
+            for i in range(0, len(plate2) + 1):
+                temp_array2 = list(temp_array)
+                temp_array2.insert(i, '_')
+                tempstring = ''.join(temp_array2)
+                print(tempstring)
+                if editdistance.eval(plate1, plate2) == editdistance.eval(plate1, tempstring):
+                    print(tempstring)
+                    plate2 = tempstring
+                    continue
         if len(plate2) > len(plate1):
-            plate1 += '_'
-        # array1 = []
-        # array1poss = []
+            temp_array = list(plate2)
+            for i in range(0, len(plate2) + 1):
+                temp_array2 = list(temp_array)
+                temp_array2.insert(i, '_')
+                tempstring = ''.join(temp_array2)
+                print(tempstring)
+                if editdistance.eval(plate1, plate2) == editdistance.eval(plate1, tempstring):
+                    print(tempstring)
+                    plate2 = tempstring
+                    continue
     for i, each in enumerate(plate1):
         value = []
         if each == plate2[i]:
